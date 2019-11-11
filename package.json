@@ -1,7 +1,7 @@
 {
-  "name": "@dwdjs/vue-admin-pro",
-  "version": "0.0.1",
-  "description": "@dwdjs/vue-admin-pro",
+  "name": "@dwdjs/vue2-template",
+  "version": "1.0.0",
+  "description": "@dwdjs/vue2-template",
   "author": "cloudyan <cloudyan@cloudai.net>",
   "license": "MIT",
   "scripts": {
