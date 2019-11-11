@@ -1,0 +1,290 @@
+@import '~@/style/var';
+@import './normalize';
+
+// NOTE: 注意在main.js 中引入的话，postcss的应用不是很好 如short-posscss
+
+// http://stackoverflow.com/a/13611748/3040605
+// 设置数字的字体
+@font-face {
+  font-family: "Helvetica Neue For Number";
+  src: local("Helvetica Neue");
+  unicode-range: U+30-39;
+}
+
+// Reset the box-sizing
+// html {
+* {
+  box-sizing: border-box;
+
+  // remove tap highlight color for mobile safari
+  // 这个属性只用于iOS (iPhone和iPad)。当你点击一个链接或者通过Javascript定义的可点击元素的时候，它就会出现一个半透明的灰色背景。
+  // 要重设这个表现，你可以设置-webkit-tap-highlight-color为任何颜色。
+  // 想要禁用这个高亮，设置颜色的alpha值为0即可。
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  user-select: none;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+a,
+div {
+  // -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  // -webkit-touch-callout: none;
+  // touch-callout: none;
+  // -webkit-user-select: none;
+
+}
+
+/**
+ * 1. http://usabilitypost.com/2012/11/15/w-optimizelegibility-on-mobile-devices/
+ * 2. http://maxvoltar.com/archive/-webkit-font-smoothing
+ *    设置 smoothing 使页面上的字体抗锯齿，更清晰舒服，特别针对图标文字
+ * NOTE: http://usabilitypost.com/2012/11/05/stop-fixing-font-smoothing/
+ * 3. http://maximilianhoffmann.com/posts/better-font-rendering-on-osx
+ *    http://jaydenseric.com/blog/css-font-smoothing-for-firefox-mac
+ * 4. http://blogs.msdn.com/b/ie_cn/archive/2012/01/17/css.aspx
+ */
+body,
+button,
+input,
+select,
+optgroup,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  // 纤细字体
+  text-rendering: optimizeLegibility;  // 1 当绘制文本时，浏览器会侧重文本的可读性（清晰度），而不是渲染速度和几何精度
+  -webkit-font-smoothing: antialiased; // 2 抗锯齿
+}
+
+// html,
+// body,
+// #app {
+//   // vh 在 ios safari 和 chrome对高度的渲染有问题，有地址栏和操作区，非满屏会出现滚动条（微信没问题）
+//   // 改为 100% 后没此问题了
+//   height: 100%;
+// }
+
+// // 如果父级 height: auto 则子级 height: 100% 不生效
+// #app > .page-view {
+//   // height: 100%;
+// }
+
+.absolute-full {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// placeholder并不支持padding和height值，在Android手机原生浏览器里面如果设置了line-height的值，比如设为line-height:32px
+// 在Android自带浏览器、百度手机浏览器、小米自带浏览器上出现图一的问题（占位符靠顶部）。uc/qq正常
+// 解决办法：把line-height设置为line-height:normal(或者不设置行高问题，只设置padding即可)
+// 参看：
+// http://stackoverflow.com/questions/4919680/html5-placeholder-css-padding
+// http://caibaojian.com/html5-placeholder-discuzz.html
+input {
+  line-height: normal !important;
+  outline: none !important;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  vertical-align: middle;
+}
+
+// 限制不要撑破容器
+// [img max-width: 100% 引起地图不显示图片](https://github.com/amazeui/amazeui/issues/502)
+// img {
+//   max-width: 100%;
+// }
+
+/**
+ * Fix viewport for IE10 snap mode
+ * http://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
+ * http://msdn.microsoft.com/en-us/library/ie/hh869615%28v=vs.85%29.aspx
+ * http://msdn.microsoft.com/zh-cn/library/ie/hh708740(v=vs.85).aspx
+ * @2014.01.20: 设置以下属性以后，windows Phone 8 上显示的字体过小，暂时注释掉
+ **/
+// @-ms-viewport {
+//   width: device-width;
+// }
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: transparent;
+}
+
+// 定义滚动条轨道 内阴影+圆角
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 4px;
+  background-color: transparent;
+  // display: none;
+}
+
+// 定义滑块 内阴影+圆角
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: rgba(193, 193, 193, 0.5);
+  // display: none;
+}
+
+.scroll-wrapper,
+.v-scroll {
+  // 滚动不流畅，此属性可以恢复弹性滚动 http://efe.baidu.com/blog/mobile-fixed-layout
+  // 允许独立的滚动区域和触摸回弹
+  // NOTE：可能影响 Safari qq 上 header 没了
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// FIXED: 修复部分手机浏览器 fixed 抖动问题（安卓 UC，360等，在地址栏存在时，滚动页面，则 fixed 定位元素会抖动），
+// http://www.chenyudong.com/archives/chrome-position-fixed-shake.html
+.v-fixed {
+  transform: translateZ(0);
+  // NOTE: fixed 布局不能有下面这个属性，会影响 fixed 正常显示
+  // transform: translate3d(0, 0, 0);
+}
+
+.clearfix {
+  clearfix();
+}
+
+.ellipsis,
+.max-line-1 {
+  textOverflow();
+}
+
+.max-line-2 {
+  maxLine(2)
+}
+
+.max-line-3 {
+  maxLine(3)
+}
+
+.link {
+  color: $color-link;
+}
+
+.num,
+.price,
+.del-price {
+  font-family: arial,sans-serif;
+}
+
+.B {
+  font-weight: 700;
+}
+
+.fr {
+  float: right;
+}
+.fl {
+  float: left;
+}
+.text-center {
+  text-align: center;
+}
+
+.pr {
+  position: relative;
+}
+
+.f10 {
+  font-size: 12px;
+  transform: scale(0.834);
+}
+.f8 {
+  font-size: 12px;
+  transform: scale(0.75);
+}
+
+// flex：定义布局为盒模型
+// flex-v：盒模型垂直布局
+// flex-1：子元素占据剩余的空间
+// flex-align-center：子元素垂直居中
+// flex-pack-center：子元素水平居中
+// flex-pack-justify：子元素两端对齐
+.flex { display: flex; }
+.flex-v { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+.flex-inline {
+  flex: 1;
+  display: inline-flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-shrink {
+  flex-shrink: 0;
+}
+.flex-grow {
+  flex-shrink: 0;
+}
+
+.flex-middle {
+  display: flex;
+  align-items: center;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+// flex-direction 定义主轴方向
+// 元素的对齐方式
+// justify-content 伸缩行 主轴（横轴）方向上（控制整体内容）
+// align-content 伸缩行 侧轴方向的对齐方式
+// align-items 当前行侧轴方向的对齐方式（元素主轴方向排布，这排布的这一行元素本身有个对齐方式）
+.flex-justify-start   { justify-content: flex-start; }
+.flex-justify-center  { justify-content: center; }
+.flex-justify-end     { justify-content: flex-end; }
+.flex-justify-between { justify-content: space-between; }
+.flex-justify-around  { justify-content: space-around; }
+
+// 请注意本属性 align-content 在只有一行的伸缩容器上没有效果。
+.flex-align-start   { align-content: flex-start; }
+.flex-align-center  { align-content: center; }
+.flex-align-end     { align-content: flex-end; }
+.flex-align-between { align-content: space-between; }
+.flex-align-around  { align-content: space-around; }
+.flex-align-stretch { align-content: stretch; }
+
+.flex-items-start   { align-items: flex-start; }
+.flex-items-center  { align-items: center; }
+.flex-items-end     { align-items: flex-end; }
+.flex-items-stretch { align-items: stretch; }
+
+.flex-start { align-self: flex-start; }
+.flex-end { align-self: flex-end; }
+.width-full { width: 100%; }
+img.full { width: 100%; height: 100%; }
+img.auto { width: 100%; height: auto; }
