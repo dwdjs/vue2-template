@@ -1,6 +1,9 @@
 import router from '@/router'
 
 export default {
+  showToast(opts) {
+
+  },
   back() {
     router.back()
   },
